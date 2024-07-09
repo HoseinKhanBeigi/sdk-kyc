@@ -85,17 +85,17 @@ const ObjectDetection = () => {
               y: (leftCheek.y + rightCheek.y) / 2,
             };
 
-            const points = [
-              leftEyebrowEnd,
-              midEyebrows,
-              rightEyebrowEnd,
-              leftNose,
-              noseTip,
-              rightNose,
-              leftCheek,
-              midCheeks,
-              rightCheek,
-            ];
+            // const points = [
+            //   leftEyebrowEnd,
+            //   midEyebrows,
+            //   rightEyebrowEnd,
+            //   leftNose,
+            //   noseTip,
+            //   rightNose,
+            //   leftCheek,
+            //   midCheeks,
+            //   rightCheek,
+            // ];
 
             const leftEyebrowEndX = leftEyebrowEnd.x * video.width;
 
@@ -132,34 +132,41 @@ const ObjectDetection = () => {
               .map(() => Array(3).fill("0,0"));
             // console.log(noseTip, "noseTip");
 
-            if (
-              Math.abs(midEyebrowX - canvasCenterX) < tolerance &&
-              Math.abs(midEyebrowY - canvasCenterY) < tolerance &&
-              Math.abs(midNoseX - canvasCenterX) < tolerance &&
-              Math.abs(midNoseY - canvasCenterY) < tolerance &&
-              Math.abs(midCheekX - canvasCenterX) < tolerance &&
-              Math.abs(midCheekY - canvasCenterY) < tolerance
-            ) {
+            // Center detection logic
+            const videoCenterX = videoWidth / 2;
+            const videoCenterY = videoHeight / 2;
+            // const tolerance = 50; // Adjust tolerance as needed
+            const nose = landmarks[1]; // Nose tip
+
+            // let headPosition = "";
+            const points = [nose];
+
+            const isCentered = points.every(
+              (point) =>
+                Math.abs(point.x * videoWidth - videoCenterX) < tolerance &&
+                Math.abs(point.y * videoHeight - videoCenterY) < tolerance
+            );
+
+            if (isCentered) {
               headPosition = "center";
-              container.classList.add("correct");
-              container.classList.remove("wrong");
+              containerRef.current.classList.add("correct");
+              containerRef.current.classList.remove("wrong");
             } else {
-              if (midEyebrowX < canvasCenterX - tolerance) {
+              containerRef.current.classList.remove("correct");
+              containerRef.current.classList.add("wrong");
+              if (nose.x * videoWidth < videoCenterX - tolerance) {
                 headPosition = "right";
                 setDirection("right");
-              } else if (midEyebrowX > canvasCenterX + tolerance) {
+              } else if (nose.x * videoWidth > videoCenterX + tolerance) {
                 headPosition = "left";
                 setDirection("left");
               }
-              if (midEyebrowY < canvasCenterY - tolerance) {
+              if (nose.y * videoHeight < videoCenterY - tolerance) {
                 headPosition += " up";
                 setDirection("up");
-              } else if (midEyebrowY > canvasCenterY + tolerance) {
+              } else if (nose.y * videoHeight > videoCenterY + tolerance) {
                 headPosition += " down";
                 setDirection("down");
-              } else {
-                container.classList.remove("correct");
-                container.classList.add("wrong");
               }
             }
 
