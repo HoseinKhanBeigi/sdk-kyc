@@ -150,13 +150,11 @@ const ObjectDetection = () => {
                 point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1
             );
 
-            const isCentered =
-              isWithinFrame &&
-              points.every(
-                (point) =>
-                  Math.abs(point.x * videoWidth - videoCenterX) < tolerance &&
-                  Math.abs(point.y * videoHeight - videoCenterY) < tolerance
-              );
+            const isCentered = points.every(
+              (point) =>
+                Math.abs(point.x * videoWidth - videoCenterX) < tolerance &&
+                Math.abs(point.y * videoHeight - videoCenterY) < tolerance
+            );
 
             // console.log(noseTip, "noseTip");
 
