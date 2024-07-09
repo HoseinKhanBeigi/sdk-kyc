@@ -139,25 +139,32 @@ const ObjectDetection = () => {
               Math.abs(midCheekY - canvasCenterY) < tolerance
             ) {
               headPosition = "center";
-              container.classList.add("correct");
-              container.classList.remove("wrong");
             } else {
               if (midEyebrowX < canvasCenterX - tolerance) {
                 headPosition = "left";
                 setDirection("left");
+                container.classList.add("correct");
+                container.classList.remove("wrong");
               } else if (midEyebrowX > canvasCenterX + tolerance) {
                 headPosition = "right";
                 setDirection("right");
+                container.classList.add("correct");
+                container.classList.remove("wrong");
               }
               if (midEyebrowY < canvasCenterY - tolerance) {
                 headPosition += " up";
                 setDirection("up");
+                container.classList.add("correct");
+                container.classList.remove("wrong");
               } else if (midEyebrowY > canvasCenterY + tolerance) {
                 headPosition += " down";
                 setDirection("down");
+                container.classList.add("correct");
+                container.classList.remove("wrong");
+              } else {
+                container.classList.remove("correct");
+                container.classList.add("wrong");
               }
-              container.classList.remove("correct");
-              container.classList.add("wrong");
             }
 
             // console.log(headPosition);
