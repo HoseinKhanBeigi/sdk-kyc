@@ -142,6 +142,9 @@ const ObjectDetection = () => {
               landmarks[334],
             ];
 
+            const videoCenterX = videoWidth / 2;
+            const videoCenterY = videoHeight / 2;
+
             const isWithinFrame = points.every(
               (point) =>
                 point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1
