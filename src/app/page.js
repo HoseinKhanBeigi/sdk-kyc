@@ -244,7 +244,7 @@ const ObjectDetection = () => {
           <div className="horizontal-line"></div>
         </div> */}
 
-        <FaceRecognize />
+        {/* <FaceRecognize /> */}
         {/* <canvas ref={canvasRef} /> */}
         <div className="grid">
           {grid.map((row, rowIndex) => (
