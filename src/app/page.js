@@ -201,7 +201,7 @@ const ObjectDetection = () => {
               setGrid(newGrid);
             }
 
-            // console.log(headPosition);
+            console.log(headPosition);
           }
         };
 
