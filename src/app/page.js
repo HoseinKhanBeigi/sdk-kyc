@@ -131,12 +131,8 @@ const ObjectDetection = () => {
             // console.log(noseTip, "noseTip");
 
             if (
-              Math.abs(midEyebrowX - canvasCenterX) < tolerance &&
-              Math.abs(midEyebrowY - canvasCenterY) < tolerance &&
               Math.abs(midNoseX - canvasCenterX) < tolerance &&
-              Math.abs(midNoseY - canvasCenterY) < tolerance &&
-              Math.abs(midCheekX - canvasCenterX) < tolerance &&
-              Math.abs(midCheekY - canvasCenterY) < tolerance
+              Math.abs(midNoseY - canvasCenterY) < tolerance
             ) {
               headPosition = "center";
               container.classList.add("correct");
