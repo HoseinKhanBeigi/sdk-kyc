@@ -59,10 +59,6 @@ const ObjectDetection = () => {
           minTrackingConfidence: 0.5,
         });
 
-        const newGrid = Array(3)
-          .fill(null)
-          .map(() => Array(3).fill("0,0"));
-
         const video = videoRef.current;
         const container = containerRef.current;
 
@@ -131,7 +127,9 @@ const ObjectDetection = () => {
             const tolerance = 50; // Adjust tolerance as needed
 
             let headPosition = "";
-
+            const newGrid = Array(3)
+              .fill(null)
+              .map(() => Array(3).fill("0,0"));
             // console.log(noseTip, "noseTip");
 
             if (
