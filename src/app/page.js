@@ -100,6 +100,7 @@ const ObjectDetection = () => {
             // ];
 
             const leftEyebrowEndX = leftEyebrowEnd.x * video.width;
+            const nose = landmarks[1]; // Nose tip
 
             // console.log(leftEyebrowEndX, "leftEyebrowEndX");
             const leftEyebrowEndY = leftEyebrowEnd.y * video.height;
