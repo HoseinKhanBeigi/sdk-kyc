@@ -59,6 +59,10 @@ const ObjectDetection = () => {
           minTrackingConfidence: 0.5,
         });
 
+        const newGrid = Array(3)
+          .fill(null)
+          .map(() => Array(3).fill("0,0"));
+
         const video = videoRef.current;
         const container = containerRef.current;
 
@@ -139,32 +143,55 @@ const ObjectDetection = () => {
               Math.abs(midCheekY - canvasCenterY) < tolerance
             ) {
               headPosition = "center";
+              container.classList.add("correct");
+              container.classList.remove("wrong");
             } else {
               if (midEyebrowX < canvasCenterX - tolerance) {
                 headPosition = "left";
                 setDirection("left");
-                container.classList.add("correct");
-                container.classList.remove("wrong");
               } else if (midEyebrowX > canvasCenterX + tolerance) {
                 headPosition = "right";
                 setDirection("right");
-                container.classList.add("correct");
-                container.classList.remove("wrong");
               }
               if (midEyebrowY < canvasCenterY - tolerance) {
                 headPosition += " up";
                 setDirection("up");
-                container.classList.add("correct");
-                container.classList.remove("wrong");
               } else if (midEyebrowY > canvasCenterY + tolerance) {
                 headPosition += " down";
                 setDirection("down");
-                container.classList.add("correct");
-                container.classList.remove("wrong");
               } else {
                 container.classList.remove("correct");
                 container.classList.add("wrong");
               }
+            }
+
+            if (headPosition === "right up") {
+              newGrid[2][0] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === " up") {
+              newGrid[1][0] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === "center") {
+              newGrid[1][1] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === "left up") {
+              newGrid[0][0] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === "left") {
+              newGrid[0][1] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === "right") {
+              newGrid[2][1] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === "left down") {
+              newGrid[0][2] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === "right down") {
+              newGrid[2][2] = "1,1";
+              setGrid(newGrid);
+            } else if (headPosition === " down") {
+              newGrid[1][2] = "1,1";
+              setGrid(newGrid);
             }
 
             // console.log(headPosition);
@@ -219,6 +246,15 @@ const ObjectDetection = () => {
 
         <FaceRecognize />
         {/* <canvas ref={canvasRef} /> */}
+        <div className="grid">
+          {grid.map((row, rowIndex) => (
+            <div key={rowIndex}>
+              {row.map((cell, cellIndex) => (
+                <div key={cellIndex}>{cell}</div>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
