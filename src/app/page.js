@@ -61,119 +61,106 @@ const ObjectDetection = () => {
 
         const video = videoRef.current;
         const container = containerRef.current;
-        const videoWidth = video.videoWidth;
-        const videoHeight = video.videoHeight;
 
         const onResults = (results) => {
           if (results.multiFaceLandmarks.length > 0) {
-            const landmarks = results.faceLandmarks;
-            const nose = landmarks[1]; // Nose tip
+            const landmarks = results.multiFaceLandmarks[0];
+            const Lefteye = landmarks[33];
+            const rightEyebrowEnd1 = landmarks[105]; // End of left eyebrow
+            const Righteyebrow = landmarks[52];
+            const leftEyebrowEnd = landmarks[105]; // End of left eyebrow
+            const rightEyebrowEnd = landmarks[334]; // End of right eyebrow
+            const leftNose = landmarks[4]; // Left of nose
+            const noseTip = landmarks[1]; // Nose tip
+            const rightNose = landmarks[278]; // Right of nose
+            const leftCheek = landmarks[234]; // Left cheek
+            const rightCheek = landmarks[454]; // Right cheek
 
-            const video = videoRef.current;
-            const canvas = canvasRef.current;
-            const context = canvas.getContext("2d");
-            const videoWidth = video.videoWidth;
-            const videoHeight = video.videoHeight;
+            const midEyebrows = {
+              x: (leftEyebrowEnd.x + rightEyebrowEnd.x) / 2,
+              y: (leftEyebrowEnd.y + rightEyebrowEnd.y) / 2,
+            };
+            const midCheeks = {
+              x: (leftCheek.x + rightCheek.x) / 2,
+              y: (leftCheek.y + rightCheek.y) / 2,
+            };
 
-            // Draw the image on the canvas
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            context.drawImage(video, 0, 0, videoWidth, videoHeight);
+            const points = [
+              leftEyebrowEnd,
+              midEyebrows,
+              rightEyebrowEnd,
+              leftNose,
+              noseTip,
+              rightNose,
+              leftCheek,
+              midCheeks,
+              rightCheek,
+            ];
 
-            // Identify lower face points with maximum distance in x-direction
-            let leftMostPoint = landmarks[234];
-            let rightMostPoint = landmarks[454];
+            const leftEyebrowEndX = leftEyebrowEnd.x * video.width;
 
-            // Draw landmarks and connectors
-            // drawLandmarks(context, [nose], { color: "red", lineWidth: 2 });
-            // drawLandmarks(context, landmarks.slice(105, 106), {
-            //   color: "blue",
-            //   lineWidth: 2,
-            // }); // Left eyebrow end
-            // drawLandmarks(context, landmarks.slice(334, 335), {
-            //   color: "blue",
-            //   lineWidth: 2,
-            // }); // Right eyebrow end
-            // drawLandmarks(context, [leftMostPoint, rightMostPoint], {
-            //   color: "green",
-            //   lineWidth: 2,
-            // }); // Lower face points
+            // console.log(leftEyebrowEndX, "leftEyebrowEndX");
+            const leftEyebrowEndY = leftEyebrowEnd.y * video.height;
+            const rightEyebrowEndX = rightEyebrowEnd.x * video.width;
 
-            // Determine grid position
-            const gridX = Math.min(Math.max(Math.floor(nose.x * 3), 0), 2);
-            const gridY = Math.min(Math.max(Math.floor(nose.y * 3), 0), 2);
+            const rightEyebrowEndY = rightEyebrowEnd.y * video.height;
+            const leftNoseX = leftNose.x * video.width;
+            const leftNoseY = leftNose.y * video.height;
+            const noseTipX = noseTip.x * video.width;
+            const noseTipY = noseTip.y * video.height;
+            const rightNoseX = rightNose.x * video.width;
+            const rightNoseY = rightNose.y * video.height;
+            const leftCheekX = leftCheek.x * video.width;
+            const leftCheekY = leftCheek.y * video.height;
+            const rightCheekX = rightCheek.x * video.width;
+            const rightCheekY = rightCheek.y * video.height;
 
-            // Reset grid and set new position
-            const newGrid = Array(3)
-              .fill(null)
-              .map(() => Array(3).fill("0,0"));
-            // newGrid[gridY][gridX] = "1,1";
+            const midEyebrowX = (leftEyebrowEndX + rightEyebrowEndX) / 2;
+            const midEyebrowY = (leftEyebrowEndY + rightEyebrowEndY) / 2;
+            const midNoseX = (leftNoseX + rightNoseX) / 2;
+            const midNoseY = (leftNoseY + rightNoseY) / 2;
+            const midCheekX = (leftCheekX + rightCheekX) / 2;
+            const midCheekY = (leftCheekY + rightCheekY) / 2;
 
-            // Center detection logic
-            const videoCenterX = videoWidth / 2;
-            const videoCenterY = videoHeight / 2;
+            const canvasCenterX = video.width / 2;
+            const canvasCenterY = video.height / 2;
             const tolerance = 50; // Adjust tolerance as needed
 
             let headPosition = "";
-            const points = [nose];
 
-            const isCentered = points.every(
-              (point) =>
-                Math.abs(point.x * videoWidth - videoCenterX) < tolerance &&
-                Math.abs(point.y * videoHeight - videoCenterY) < tolerance
-            );
+            // console.log(noseTip, "noseTip");
 
-            if (isCentered) {
+            if (
+              Math.abs(midEyebrowX - canvasCenterX) < tolerance &&
+              Math.abs(midEyebrowY - canvasCenterY) < tolerance &&
+              Math.abs(midNoseX - canvasCenterX) < tolerance &&
+              Math.abs(midNoseY - canvasCenterY) < tolerance &&
+              Math.abs(midCheekX - canvasCenterX) < tolerance &&
+              Math.abs(midCheekY - canvasCenterY) < tolerance
+            ) {
               headPosition = "center";
-              containerRef.current.classList.add("correct");
-              containerRef.current.classList.remove("wrong");
+              container.classList.add("correct");
+              container.classList.remove("wrong");
             } else {
-              containerRef.current.classList.remove("correct");
-              containerRef.current.classList.add("wrong");
-              if (nose.x * videoWidth < videoCenterX - tolerance) {
+              container.classList.remove("correct");
+              container.classList.add("wrong");
+              if (midEyebrowX < canvasCenterX - tolerance) {
                 headPosition = "right";
                 setDirection("right");
-              } else if (nose.x * videoWidth > videoCenterX + tolerance) {
+              } else if (midEyebrowX > canvasCenterX + tolerance) {
                 headPosition = "left";
                 setDirection("left");
               }
-              if (nose.y * videoHeight < videoCenterY - tolerance) {
+              if (midEyebrowY < canvasCenterY - tolerance) {
                 headPosition += " up";
                 setDirection("up");
-              } else if (nose.y * videoHeight > videoCenterY + tolerance) {
+              } else if (midEyebrowY > canvasCenterY + tolerance) {
                 headPosition += " down";
                 setDirection("down");
               }
             }
 
-            if (headPosition === "right up") {
-              newGrid[2][0] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === " up") {
-              newGrid[1][0] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === "center") {
-              newGrid[1][1] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === "left up") {
-              newGrid[0][0] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === "left") {
-              newGrid[0][1] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === "right") {
-              newGrid[2][1] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === "left down") {
-              newGrid[0][2] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === "right down") {
-              newGrid[2][2] = "1,1";
-              setGrid(newGrid);
-            } else if (headPosition === " down") {
-              newGrid[1][2] = "1,1";
-              setGrid(newGrid);
-            }
-            console.log(`Head is in the ${headPosition}`);
+            console.log(headPosition);
           }
         };
 
@@ -217,7 +204,6 @@ const ObjectDetection = () => {
     <div className="detection-container">
       <div className="video-container" ref={containerRef}>
         <video ref={videoRef} autoPlay={true} playsInline={true} muted={true} />
-        <canvas ref={canvasRef} width="640" height="480" />
 
         {/* <div className="crosshair">
           <div className="vertical-line"></div>
@@ -226,15 +212,6 @@ const ObjectDetection = () => {
 
         <FaceRecognize />
         {/* <canvas ref={canvasRef} /> */}
-      </div>
-      <div className="grid">
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            {row.map((cell, cellIndex) => (
-              <div key={cellIndex}>{cell}</div>
-            ))}
-          </div>
-        ))}
       </div>
     </div>
   );
