@@ -145,11 +145,11 @@ const ObjectDetection = () => {
               container.classList.remove("wrong");
             } else {
               if (midEyebrowX < canvasCenterX - tolerance) {
-                headPosition = "left";
-                setDirection("left");
-              } else if (midEyebrowX > canvasCenterX + tolerance) {
                 headPosition = "right";
                 setDirection("right");
+              } else if (midEyebrowX > canvasCenterX + tolerance) {
+                headPosition = "left";
+                setDirection("left");
               }
               if (midEyebrowY < canvasCenterY - tolerance) {
                 headPosition += " up";
