@@ -61,6 +61,8 @@ const ObjectDetection = () => {
 
         const video = videoRef.current;
         const container = containerRef.current;
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
 
         const onResults = (results) => {
           if (results.multiFaceLandmarks.length > 0) {
