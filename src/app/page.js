@@ -244,17 +244,17 @@ const ObjectDetection = () => {
           <div className="horizontal-line"></div>
         </div> */}
 
-        {/* <FaceRecognize /> */}
+        <FaceRecognize />
         {/* <canvas ref={canvasRef} /> */}
-        <div className="grid">
-          {grid.map((row, rowIndex) => (
-            <div key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <div key={cellIndex}>{cell}</div>
-              ))}
-            </div>
-          ))}
-        </div>
+      </div>
+      <div className="grid">
+        {grid.map((row, rowIndex) => (
+          <div key={rowIndex}>
+            {row.map((cell, cellIndex) => (
+              <div key={cellIndex}>{cell}</div>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
