@@ -62,6 +62,8 @@ const ObjectDetection = () => {
         const video = videoRef.current;
         const container = containerRef.current;
 
+        const videoWidth = video.videoWidth;
+        const videoHeight = video.videoHeight;
         const onResults = (results) => {
           if (results.multiFaceLandmarks.length > 0) {
             const landmarks = results.multiFaceLandmarks[0];
@@ -85,17 +87,17 @@ const ObjectDetection = () => {
               y: (leftCheek.y + rightCheek.y) / 2,
             };
 
-            const points = [
-              leftEyebrowEnd,
-              midEyebrows,
-              rightEyebrowEnd,
-              leftNose,
-              noseTip,
-              rightNose,
-              leftCheek,
-              midCheeks,
-              rightCheek,
-            ];
+            // const points = [
+            //   leftEyebrowEnd,
+            //   midEyebrows,
+            //   rightEyebrowEnd,
+            //   leftNose,
+            //   noseTip,
+            //   rightNose,
+            //   leftCheek,
+            //   midCheeks,
+            //   rightCheek,
+            // ];
 
             const leftEyebrowEndX = leftEyebrowEnd.x * video.width;
 
@@ -124,37 +126,54 @@ const ObjectDetection = () => {
 
             const canvasCenterX = video.width / 2;
             const canvasCenterY = video.height / 2;
+
+            // Identify lower face points with maximum distance in x-direction
+            let leftMostPoint = landmarks[234];
+            let rightMostPoint = landmarks[454];
             const tolerance = 50; // Adjust tolerance as needed
 
             let headPosition = "";
+            const points = [
+              nose,
+              leftMostPoint,
+              rightMostPoint,
+              landmarks[105],
+              landmarks[334],
+            ];
+
+            const isWithinFrame = points.every(
+              (point) =>
+                point.x >= 0 && point.x <= 1 && point.y >= 0 && point.y <= 1
+            );
+
+            const isCentered =
+              isWithinFrame &&
+              points.every(
+                (point) =>
+                  Math.abs(point.x * videoWidth - videoCenterX) < tolerance &&
+                  Math.abs(point.y * videoHeight - videoCenterY) < tolerance
+              );
 
             // console.log(noseTip, "noseTip");
 
-            if (
-              Math.abs(midEyebrowX - canvasCenterX) < tolerance &&
-              Math.abs(midEyebrowY - canvasCenterY) < tolerance &&
-              Math.abs(midNoseX - canvasCenterX) < tolerance &&
-              Math.abs(midNoseY - canvasCenterY) < tolerance &&
-              Math.abs(midCheekX - canvasCenterX) < tolerance &&
-              Math.abs(midCheekY - canvasCenterY) < tolerance
-            ) {
+            if (isCentered) {
               headPosition = "center";
-              container.classList.add("correct");
-              container.classList.remove("wrong");
+              containerRef.current.classList.add("correct");
+              containerRef.current.classList.remove("wrong");
             } else {
-              container.classList.remove("correct");
-              container.classList.add("wrong");
-              if (midEyebrowX < canvasCenterX - tolerance) {
+              containerRef.current.classList.remove("correct");
+              containerRef.current.classList.add("wrong");
+              if (nose.x * videoWidth < videoCenterX - tolerance) {
                 headPosition = "left";
                 setDirection("left");
-              } else if (midEyebrowX > canvasCenterX + tolerance) {
+              } else if (nose.x * videoWidth > videoCenterX + tolerance) {
                 headPosition = "right";
                 setDirection("right");
               }
-              if (midEyebrowY < canvasCenterY - tolerance) {
+              if (nose.y * videoHeight < videoCenterY - tolerance) {
                 headPosition += " up";
                 setDirection("up");
-              } else if (midEyebrowY > canvasCenterY + tolerance) {
+              } else if (nose.y * videoHeight > videoCenterY + tolerance) {
                 headPosition += " down";
                 setDirection("down");
               }
