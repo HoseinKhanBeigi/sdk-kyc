@@ -1,0 +1,298 @@
+/* src/ObjectDetection.css */
+
+.detection-container {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  /* background: antiquewhite; */
+}
+
+.video-container {
+  position: relative;
+  width: 83%;
+  /* margin-top: 100px; */
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  border-radius: 50%;
+  border: 2px solid;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.video-container.correct {
+  border-color: rgb(0, 128, 83);
+  /* transform: scale(1.1); */
+
+  transition: border 1s ease, transform 1s ease, background-color 1s ease;
+  box-shadow: 0 4px 2px rgba(0, 255, 0, 0.6);
+}
+
+.video-container.wrong {
+  border-color: rgb(255, 27, 27);
+  /* transform: scale(0.9); */
+
+  transition: border 1s ease, transform 1s ease, background-color 1s ease;
+  box-shadow: 0 4px 20px rgba(255, 0, 0, 0.6);
+}
+
+video,
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.circle-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: background-color 0.5s ease;
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.crosshair .vertical-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background-color: rgba(255, 0, 0, 0.5);
+  transform: translateX(-50%);
+}
+
+.crosshair .horizontal-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(255, 0, 0, 0.5);
+  transform: translateY(-50%);
+}
+
+.correct-position {
+  background-color: green;
+}
+
+.wrong-position {
+  background-color: red;
+}
+
+.direction-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.5s ease;
+}
+
+.direction-indicator.left::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-right: 40px solid rgba(255, 0, 0, 0.5);
+  transform: translateY(-50%);
+  animation: flash 0.5s ease;
+}
+
+.direction-indicator.right::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10%;
+  width: 0;
+  height: 0;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 40px solid rgba(255, 0, 0, 0.5);
+  transform: translateY(-50%);
+  animation: flash 0.5s ease;
+}
+
+.direction-indicator.up::after {
+  content: "";
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 40px solid rgba(255, 0, 0, 0.5);
+  transform: translateX(-50%);
+  animation: flash 0.5s ease;
+}
+
+.direction-indicator.down::after {
+  content: "";
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 40px solid rgba(255, 0, 0, 0.5);
+  transform: translateX(-50%);
+  animation: flash 0.5s ease;
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.hint {
+  position: relative;
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5em;
+  color: black;
+  background: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.DownIcon {
+  position: absolute;
+  width: 300px;
+  bottom: 261px;
+  animation: DownIcon 1s infinite alternate ease-in-out;
+}
+
+@keyframes DownIcon {
+  0% {
+    bottom: 261px;
+  }
+  100% {
+    bottom: 204px;
+  }
+}
+
+.UpIcon {
+  position: absolute;
+  width: 300px;
+  bottom: 0;
+  top: 250px;
+  animation: UpIcon 1s infinite alternate ease-in-out;
+}
+
+@keyframes UpIcon {
+  0% {
+    top: 250px;
+  }
+  100% {
+    top: 134px;
+  }
+}
+
+.LeftIcon {
+  position: absolute;
+  width: 300px;
+  bottom: 261px;
+  animation: LeftIcon 1s infinite alternate ease-in-out;
+}
+
+@keyframes LeftIcon {
+  0% {
+    bottom: 261px;
+  }
+  100% {
+    bottom: 234px;
+  }
+}
+
+.rightIcon {
+  position: absolute;
+  width: 300px;
+  bottom: 261px;
+  animation: rightIcon 1s infinite alternate ease-in-out;
+}
+
+@keyframes rightIcon {
+  0% {
+    bottom: 261px;
+  }
+  100% {
+    bottom: 234px;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.grid > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.grid > div > div {
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
