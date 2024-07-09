@@ -139,9 +139,9 @@ const ObjectDetection = () => {
               Math.abs(midCheekY - canvasCenterY) < tolerance
             ) {
               headPosition = "center";
+              container.classList.add("correct");
+              container.classList.remove("wrong");
             } else {
-              container.classList.remove("correct");
-              container.classList.add("wrong");
               if (midEyebrowX < canvasCenterX - tolerance) {
                 headPosition = "left";
                 setDirection("left");
@@ -156,6 +156,8 @@ const ObjectDetection = () => {
                 headPosition += " down";
                 setDirection("down");
               }
+              container.classList.remove("correct");
+              container.classList.add("wrong");
             }
 
             // console.log(headPosition);
