@@ -128,35 +128,35 @@ const ObjectDetection = () => {
 
             let headPosition = "";
 
-            console.log(noseTip, "noseTip");
+            // console.log(noseTip, "noseTip");
 
-            // if (
-            //   Math.abs(midEyebrowX - canvasCenterX) < tolerance &&
-            //   Math.abs(midEyebrowY - canvasCenterY) < tolerance &&
-            //   Math.abs(midNoseX - canvasCenterX) < tolerance &&
-            //   Math.abs(midNoseY - canvasCenterY) < tolerance &&
-            //   Math.abs(midCheekX - canvasCenterX) < tolerance &&
-            //   Math.abs(midCheekY - canvasCenterY) < tolerance
-            // ) {
-            //   headPosition = "center";
-            // } else {
-            //   container.classList.remove("correct");
-            //   container.classList.add("wrong");
-            //   if (midEyebrowX < canvasCenterX - tolerance) {
-            //     headPosition = "left";
-            //     setDirection("left");
-            //   } else if (midEyebrowX > canvasCenterX + tolerance) {
-            //     headPosition = "right";
-            //     setDirection("right");
-            //   }
-            //   if (midEyebrowY < canvasCenterY - tolerance) {
-            //     headPosition += " up";
-            //     setDirection("up");
-            //   } else if (midEyebrowY > canvasCenterY + tolerance) {
-            //     headPosition += " down";
-            //     setDirection("down");
-            //   }
-            // }
+            if (
+              Math.abs(midEyebrowX - canvasCenterX) < tolerance &&
+              Math.abs(midEyebrowY - canvasCenterY) < tolerance &&
+              Math.abs(midNoseX - canvasCenterX) < tolerance &&
+              Math.abs(midNoseY - canvasCenterY) < tolerance &&
+              Math.abs(midCheekX - canvasCenterX) < tolerance &&
+              Math.abs(midCheekY - canvasCenterY) < tolerance
+            ) {
+              headPosition = "center";
+            } else {
+              container.classList.remove("correct");
+              container.classList.add("wrong");
+              if (midEyebrowX < canvasCenterX - tolerance) {
+                headPosition = "left";
+                setDirection("left");
+              } else if (midEyebrowX > canvasCenterX + tolerance) {
+                headPosition = "right";
+                setDirection("right");
+              }
+              if (midEyebrowY < canvasCenterY - tolerance) {
+                headPosition += " up";
+                setDirection("up");
+              } else if (midEyebrowY > canvasCenterY + tolerance) {
+                headPosition += " down";
+                setDirection("down");
+              }
+            }
 
             // console.log(headPosition);
           }
