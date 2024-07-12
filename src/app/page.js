@@ -1,7 +1,7 @@
 "use client";
 // src/ObjectDetection.js
 import React, { useEffect, useRef, useState, useCallback, use } from "react";
-import loadFaceMesh from "./faceMesh.js";
+import loadFaceMesh from "./faceMesh";
 import "./index2.css";
 
 const steps = [
@@ -277,18 +277,18 @@ const ObjectDetection = () => {
     >
       <div className="video-container">
         <video ref={videoRef} width="640" height="480" autoPlay muted />
-        <div className="crosshair">
+        {/* <div className="crosshair">
           <div className="vertical-line"></div>
           <div className="horizontal-line"></div>
-        </div>
+        </div> */}
       </div>
       {!sequenceCompleted && (
         <>
-          <div
+          {/* <div
             className={`circle-indicator ${
               isFaceInCorrectPosition ? "correct-position" : "wrong-position"
             }`}
-          ></div>
+          ></div> */}
           <div className="hint">
             {steps.find((step) => step.step === currentStep)?.hint}
           </div>
@@ -325,7 +325,12 @@ const ObjectDetection = () => {
         height="328.001"
         ref={containerRef}
         viewBox="0 0 328 328.001"
-        style={{ position: "absolute" }}
+        style={{
+          position: "absolute",
+          top: "145px",
+          maxWidth: "70%",
+          width: "100%",
+        }}
       >
         <g data-name="Group 2413">
           <g data-name="Union 5">

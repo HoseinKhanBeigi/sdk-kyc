@@ -3,7 +3,7 @@
 .detection-container {
   position: relative;
   width: 100%;
-  max-width: 640px;
+  max-width: 440px;
   margin: auto;
   display: flex;
   justify-content: center;
@@ -290,9 +290,9 @@ canvas {
 }
 
 .not-centered {
-  background-color: red;
+  /* background-color: red; */
 }
 
 .step-completed {
-  background-color: green;
+  /* background-color: green; */
 }
