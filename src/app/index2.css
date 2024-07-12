@@ -15,11 +15,11 @@
 
 .video-container {
   position: relative;
-  width: 83%;
+  width: 100%;
   /* margin-top: 100px; */
   padding-top: 100%; /* 1:1 Aspect Ratio */
-  border-radius: 50%;
-  border: 2px solid;
+  /* border-radius: 50%; */
+  /* border: 2px solid; */
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.8);
 }
@@ -28,7 +28,7 @@
   border-color: rgb(0, 128, 83);
   /* transform: scale(1.1); */
 
-  transition: border 1s ease, transform 1s ease, background-color 1s ease;
+  /* transition: border 1s ease, transform 1s ease, background-color 1s ease; */
   box-shadow: 0 4px 2px rgba(0, 255, 0, 0.6);
 }
 
@@ -36,7 +36,7 @@
   border-color: rgb(255, 27, 27);
   /* transform: scale(0.9); */
 
-  transition: border 1s ease, transform 1s ease, background-color 1s ease;
+  /* transition: border 1s ease, transform 1s ease, background-color 1s ease; */
   box-shadow: 0 4px 20px rgba(255, 0, 0, 0.6);
 }
 
@@ -47,7 +47,7 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: 3%;
   object-fit: cover;
   transform: scaleX(-1);
 }
@@ -79,7 +79,7 @@ canvas {
   left: 50%;
   width: 2px;
   height: 100%;
-  background-color: rgba(255, 0, 0, 0.5);
+  /* background-color: rgba(255, 0, 0  0.5); */
   transform: translateX(-50%);
 }
 
@@ -89,7 +89,7 @@ canvas {
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: rgba(255, 0, 0, 0.5);
+  /* background-color: rgba(255, 0, 0, 0.5);   */
   transform: translateY(-50%);
 }
 
@@ -103,10 +103,8 @@ canvas {
 
 .direction-indicator {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
+  height: 100px;
+  top: 100px;
   pointer-events: none;
   z-index: 1;
   transition: opacity 0.5s ease;
@@ -140,16 +138,7 @@ canvas {
   animation: flash 0.5s ease;
 }
 
-.direction-indicator.up::after {
-  content: "";
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-bottom: 40px solid rgba(255, 0, 0, 0.5);
+.direction-indicator.up {
   transform: translateX(-50%);
   animation: flash 0.5s ease;
 }
@@ -229,18 +218,21 @@ canvas {
 
 .UpIcon {
   position: absolute;
-  width: 300px;
-  bottom: 0;
-  top: 250px;
+  height: 100px;
+  top: 100px;
+  left: 45%;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.5s ease;
   animation: UpIcon 1s infinite alternate ease-in-out;
 }
 
 @keyframes UpIcon {
   0% {
-    top: 250px;
+    top: 140px;
   }
   100% {
-    top: 134px;
+    top: 100px;
   }
 }
 
@@ -295,4 +287,12 @@ canvas {
   background-color: #f0f0f0;
   border: 1px solid #ddd;
   border-radius: 5px;
+}
+
+.not-centered {
+  background-color: red;
+}
+
+.step-completed {
+  background-color: green;
 }
