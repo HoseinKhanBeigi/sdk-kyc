@@ -1,7 +1,7 @@
 "use client";
 // src/ObjectDetection.js
 import React, { useEffect, useRef, useState, useCallback, use } from "react";
-import loadFaceMesh from "./faceMesh";
+import loadFaceMesh from "./faceMesh.js";
 import "./index2.css";
 
 const steps = [
