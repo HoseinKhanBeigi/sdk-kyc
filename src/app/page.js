@@ -1,6 +1,7 @@
 "use client";
 // src/ObjectDetection.js
 import React, { useEffect, useRef, useState, useCallback, use } from "react";
+import loadFaceMesh from "./faceMesh";
 import "./index2.css";
 
 const steps = [
@@ -53,14 +54,9 @@ const ObjectDetection = () => {
   }, [stateMachine.current]);
 
   useEffect(() => {
-    const loadFaceMesh = async () => {
-      const script = document.createElement("script");
-      script.src = "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh";
-      script.async = true;
-      document.body.appendChild(script);
-
-      script.onload = async () => {
-        const { FaceMesh } = window;
+    const initializeFaceMesh = async () => {
+      try {
+        const FaceMesh = await loadFaceMesh();
 
         const faceMesh = new FaceMesh({
           locateFile: (file) =>
@@ -238,10 +234,12 @@ const ObjectDetection = () => {
         });
 
         await startVideo();
-      };
+      } catch (error) {
+        console.error(error);
+      }
     };
 
-    loadFaceMesh();
+    initializeFaceMesh();
   }, []);
 
   const handleStartRecording = () => {
