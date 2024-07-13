@@ -16,6 +16,9 @@
 .video-container {
   position: relative;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* margin-top: 100px; */
   padding-top: 100%; /* 1:1 Aspect Ratio */
   /* border-radius: 50%; */

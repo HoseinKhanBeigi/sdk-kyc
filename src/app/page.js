@@ -6,8 +6,8 @@ import "./index2.css";
 
 const steps = [
   { step: "center", hint: "First, put your face in the center of the camera." },
-  { step: "left", hint: "Now, turn your face to the left." },
-  { step: "right", hint: "Next, turn your face to the right." },
+  { step: "profile-left", hint: "Now, turn your face to the left." },
+  { step: "profile-right", hint: "Next, turn your face to the right." },
   { step: "up", hint: "Finally, look up." },
 ];
 
@@ -29,23 +29,24 @@ const ObjectDetection = () => {
   const mediaRecorderRef = useRef(null);
 
   const handleFacePosition = useCallback(() => {
-    console.log(stateMachine.current);
-
     if (firstStepCompleted) {
       setTimeout(() => {
         if (currentStep === "center") {
-          setCurrentStep("left");
-        } else if (currentStep === "left" && stateMachine.current === "left") {
-          setCurrentStep("right");
+          setCurrentStep("profile-left");
         } else if (
-          currentStep === "right" &&
-          stateMachine.current === "right"
+          currentStep === "profile-left" &&
+          stateMachine.current === "profile-left"
+        ) {
+          setCurrentStep("profile-right");
+        } else if (
+          currentStep === "profile-right" &&
+          stateMachine.current === "profile-right"
         ) {
           setCurrentStep("up");
         } else if (currentStep === "up" && stateMachine.current === "up") {
           setSequenceCompleted(true);
         }
-      }, 2000);
+      }, 1500);
     }
   }, [stateMachine.current]);
 
@@ -78,6 +79,7 @@ const ObjectDetection = () => {
             results.multiFaceLandmarks.length > 0
           ) {
             const landmarks = results.multiFaceLandmarks[0];
+            // const landmarks = results.multiFaceLandmarks[0];
             const noseTip = landmarks[1]; // Nose tip
             const leftEyebrow = landmarks[70]; // Left eyebrow
             const rightEyebrow = landmarks[300]; // Right eyebrow
@@ -86,6 +88,8 @@ const ObjectDetection = () => {
             const chin = landmarks[152]; // Chin
             const leftCheek = landmarks[234]; // Left cheek
             const rightCheek = landmarks[454]; // Right cheek
+            const leftEar = landmarks[234]; // Left ear
+            const rightEar = landmarks[454]; // Right ear
 
             const points = [
               leftEyeInner,
@@ -155,6 +159,21 @@ const ObjectDetection = () => {
 
                 containerRef.current.style.stroke = "#00db5e";
               }
+
+              // Detect profile
+              if (leftCheek.x < rightCheek.x && rightCheek.x < noseTip.x) {
+                headPosition = "profile-left";
+                stateMachine.current = "profile-left";
+                containerRef.current.style.stroke = "#00db5e";
+              } else if (
+                rightCheek.x > leftCheek.x &&
+                leftCheek.x > noseTip.x
+              ) {
+                headPosition = "profile-right";
+                stateMachine.current = "profile-right";
+                containerRef.current.style.stroke = "#00db5e";
+              }
+
               containerRef.current.style.stroke = "#ff3a3a";
             }
 
@@ -186,7 +205,6 @@ const ObjectDetection = () => {
             //   newGrid[1][2] = "1,1";
             //   setGrid(newGrid);
             // }
-            console.log(headPosition);
             // Check if the head position matches the current step exactly
             if (currentStep && headPosition === currentStep) {
               setIsFaceInCorrectPosition(true);
