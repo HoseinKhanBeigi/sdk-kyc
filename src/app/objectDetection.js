@@ -93,10 +93,6 @@ const ObjectDetection = ({
   const isActiveRef = useRef(false);
   useEffect(() => {
     isActiveRef.current = !isActiveRef.current;
-    if (videoContainer.current) {
-      videoContainer.current.style.boxShadow =
-        "28px 0px 28px -12px rgba(39,255,0,1)";
-    }
   }, []);
 
   useEffect(() => {
@@ -373,13 +369,7 @@ const ObjectDetection = ({
         !firstStepCompleted && !isFaceInCorrectPosition ? "not-centered" : ""
       }`}
     >
-      <div
-        className="video-container"
-        style={{
-          boxShadow: "rgb(0 36 255) 28px 0px 28px -12px",
-        }}
-        ref={videoContainer}
-      >
+      <div className="video-container" ref={videoContainer}>
         <video ref={videoRef} width="640" height="780" autoPlay muted />
         {/* <div className="crosshair">
           <div className="vertical-line"></div>
