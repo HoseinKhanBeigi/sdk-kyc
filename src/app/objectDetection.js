@@ -376,7 +376,7 @@ const ObjectDetection = ({
       <div
         className="video-container"
         style={{
-          boxShadow: "-36px 0px 20px -20px rgba(0,255,0,0.45)",
+          boxShadow: "rgb(0 36 255) 28px 0px 28px -12px",
         }}
         ref={videoContainer}
       >
