@@ -1,0 +1,128 @@
+.form-box-unit {
+  position: relative;
+  width: 100%;
+  direction: rtl;
+}
+.form-box-unit .input {
+  all: unset;
+  background: transparent;
+  border: 2px solid #cecece;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #686868;
+  height: 43px;
+  font-family: IranianSans !important;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 0;
+  padding-right: 25px;
+  position: relative;
+  width: 100%;
+}
+.form-box-unit label {
+  color: #4f4f4f;
+  font-family: IranianSans !important;
+  font-size: 16px;
+  font-weight: bold;
+  right: 0;
+  margin-right: 17px;
+  margin-top: 12px;
+  padding: 0 10px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transition: all 0.2s linear;
+}
+.form-box-unit fieldset {
+  background: transparent;
+  border: 2px solid #cecece;
+  border-radius: 6px;
+  box-sizing: border-box;
+  height: 63px;
+  right: 0;
+  margin: 0;
+  margin-top: -23px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.form-box-unit legend {
+  margin-right: 2px;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: #1976d2;
+  visibility: hidden;
+}
+.form-box-unit legend p {
+  font-family: IranianSans !important;
+  font-size: 13px;
+  font-weight: bold;
+}
+.form-box-unit .input:focus {
+  border-color: #1976d2;
+  border-top: none;
+}
+.form-box-unit .input:focus:hover {
+  border-color: #1976d2;
+  border-top: none;
+}
+.form-box-unit .input:hover {
+  border-color: black;
+}
+.form-box-unit .input:valid {
+  border-color: #1976d2;
+  border-top: none;
+}
+.form-box-unit .input:valid:hover {
+  border-color: #1976d2;
+  border-top: none;
+}
+
+.form-box-unit .input:focus ~ label {
+  -ms-transform: translate(-14px, -9px) scale(0.75);
+  transform: translate(-14px, -9px) scale(0.75);
+  -webkit-transform: translate(-14px, -9px) scale(0.75);
+  font-size: 0.8em;
+  color: #1976d2;
+  visibility: hidden;
+}
+.form-box-unit .input:valid ~ label {
+  -ms-transform: translate(-14px, -9px) scale(0.75);
+  transform: translate(-14px, -9px) scale(0.75);
+  -webkit-transform: translate(-14px, -9px) scale(0.75);
+  font-size: 0.8em;
+  color: #1976d2;
+  visibility: hidden;
+}
+.form-box-unit .input:focus ~ fieldset {
+  border: 2px solid #1976d2;
+}
+.form-box-unit .input:focus:hover ~ fieldset {
+  border: 2px solid #1976d2;
+}
+.form-box-unit .input:hover ~ fieldset {
+  border: 2px solid black;
+}
+.form-box-unit .input:valid ~ fieldset {
+  border: 2px solid #1976d2;
+}
+.form-box-unit .input:valid:hover ~ fieldset {
+  border: 2px solid #1976d2;
+}
+.input:focus ~ fieldset > legend {
+  -webkit-animation: legend 0.1s 0.2s forwards;
+  animation: legend 0.1s 0.2s forwards;
+}
+.input:valid ~ fieldset > legend {
+  -webkit-animation: legend 0.1s 0.2s forwards;
+  animation: legend 0.1s 0.2s forwards;
+}
+@keyframes legend {
+  0% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
