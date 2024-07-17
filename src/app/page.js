@@ -383,9 +383,7 @@ const Kyc = () => {
             {/*  onChange={handleChangeBrithDate}*/}
             {/*  defaultValue={new Date("1996-01-10")}*/}
             {/*/>*/}
-            <Button fullWidth variant="outlined" onClick={handleNext}>
-              بعدی
-            </Button>
+            <button onClick={handleNext}>بعدی</button>
           </div>
         )}
 
