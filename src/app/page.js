@@ -302,7 +302,6 @@ const Kyc = () => {
         (action) => actionMappings[action]
       );
 
-      console.log(mappedActions);
       setActions(mappedActions);
       // handleGetActios(json.orderId);
     } catch (error) {
@@ -312,10 +311,6 @@ const Kyc = () => {
 
   const [isGreen, setIsGreen] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(true);
-
-  useEffect(() => {
-    console.log(boxRef);
-  }, []);
 
   return (
     <div style={{ display: "flex" }}>
