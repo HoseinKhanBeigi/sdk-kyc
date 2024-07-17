@@ -19,12 +19,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* margin-top: 100px; */
-  padding-top: 100%; /* 1:1 Aspect Ratio */
-  /* border-radius: 50%; */
-  /* border: 2px solid; */
-  overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .video-container.correct {
