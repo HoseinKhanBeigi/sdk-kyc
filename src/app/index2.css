@@ -20,12 +20,16 @@
   border-radius: 37px;
 }
 
+/* top 0px -50px 29px -28px #e93f33 */
+/* down 0px 50px 29px -28px #e93f33 */
+/* letf -50px 0 29px -28px #e93f33 */
+/* right 50px 0 29px -28px #e93f33 */
+
 .video-container.active {
-  border-left-color: #e93f33;
   border-right-color: transparent;
   border-bottom-color: transparent;
   border-top-color: transparent;
-  box-shadow: -46px 0 24px -14px #e93f33;
+  box-shadow: 0px -50px 29px -28px #e93f33;
   transition: box-shadow 0.5s ease-in-out, border-left-color 0.5s ease-in-out;
 }
 
