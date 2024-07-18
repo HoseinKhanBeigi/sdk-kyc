@@ -1,12 +1,8 @@
 "use client";
 // src/VideoRecorder.js
 import React, { useState, useRef, useMemo, useEffect } from "react";
-import TextField from "@mui/material/TextField";
-import CacheInput from "../cacheInput";
-import Button from "@mui/material/Button";
-import axios from "axios";
-import ObjectDetection from "./page11";
-import DatePickerInput from "../components/hook-form/datePicker";
+
+import ObjectDetection from "./objectDetection";
 
 import "./index.css";
 import Input from "./Input/input";
@@ -125,27 +121,27 @@ const Kyc = () => {
 
   const handleSendVideo = async (file) => {
     console.log(file);
-    if (file) {
-      console.log(file);
-      const formData = new FormData();
-      formData.append("file", file, "recorded-video.mp4");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-          charset: "utf-8",
-        },
-      };
-      return await axios
-        .post(
-          `https://uat.kian.digital/api-proxy/v2/kyc/submit/${orderId}`,
-          formData,
-          config
-        )
-        .then((res) => {
-          setDateVideo(res.data);
-        });
-    }
+    // if (file) {
+    //   console.log(file);
+    //   const formData = new FormData();
+    //   formData.append("file", file, "recorded-video.mp4");
+    //   const config = {
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //       "Content-Type": "multipart/form-data",
+    //       charset: "utf-8",
+    //     },
+    //   };
+    //   return await axios
+    //     .post(
+    //       `https://uat.kian.digital/api-proxy/v2/kyc/submit/${orderId}`,
+    //       formData,
+    //       config
+    //     )
+    //     .then((res) => {
+    //       setDateVideo(res.data);
+    //     });
+    // }
   };
 
   const handleGetActios = async (id) => {
@@ -349,15 +345,14 @@ const Kyc = () => {
               direction: "rtl",
             }}
           >
-            <CacheInput>
-              <Input
-                title={"شماره ملي"}
-                required={true}
-                maxlength={10}
-                onChange={onChangeInput("nationalCode")}
-                value={filterInputs.nationalCode}
-              />
-            </CacheInput>
+            <Input
+              title={"شماره ملي"}
+              required={true}
+              maxlength={10}
+              onChange={onChangeInput("nationalCode")}
+              value={filterInputs.nationalCode}
+            />
+
             <div
               style={{
                 display: "flex",
@@ -396,9 +391,9 @@ const Kyc = () => {
             {/*  onChange={handleChangeBrithDate}*/}
             {/*  defaultValue={new Date("1996-01-10")}*/}
             {/*/>*/}
-            <Button fullWidth variant="outlined" onClick={handleNext}>
+            <button fullWidth variant="outlined" onClick={handleNext}>
               بعدی
-            </Button>
+            </button>
           </div>
         )}
 
