@@ -91,8 +91,37 @@ const ObjectDetection = ({
   }, [stateMachine.current]);
 
   const isActiveRef = useRef(false);
+
+  const removeToggle1 = useRef();
+
   useEffect(() => {
-    isActiveRef.current = !isActiveRef.current;
+    let start;
+    const toggleClass = (timestamp) => {
+      if (!start) start = timestamp;
+      const elapsed = timestamp - start;
+
+      if (elapsed >= 500) {
+        // Toggle class
+        isActiveRef.current = !isActiveRef.current;
+        if (videoContainer.current) {
+          videoContainer.current.className = isActiveRef.current
+            ? "video-container active"
+            : "video-container inactive";
+        }
+        start = timestamp; // Reset the start time
+      }
+
+      // Request the next frame
+      removeToggle1.current = requestAnimationFrame(toggleClass);
+    };
+
+    // Start the animation
+    removeToggle1.current = requestAnimationFrame(toggleClass);
+
+    // Cleanup function to cancel the animation frame
+    return () => {
+      removeToggle1.current = cancelAnimationFrame(toggleClass);
+    };
   }, []);
 
   useEffect(() => {

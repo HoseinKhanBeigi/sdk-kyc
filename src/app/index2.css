@@ -16,6 +16,26 @@
   position: relative;
   width: 100%;
   height: 300px;
+  border: 1px solid transparent;
+  border-radius: 37px;
+}
+
+.video-container.active {
+  border-left-color: #e93f33;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  box-shadow: -46px 0 24px -14px #e93f33;
+  transition: box-shadow 0.5s ease-in-out, border-left-color 0.5s ease-in-out;
+}
+
+.video-container.inactive {
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  border-top-color: transparent;
+  box-shadow: 0 0 0px 0 transparent;
+  transition: box-shadow 0.5s ease-in-out, border-left-color 0.5s ease-in-out;
 }
 
 video,
@@ -25,6 +45,7 @@ canvas {
   left: 0;
   width: 100%;
   height: 100%;
+  border-radius: 12px;
   object-fit: cover;
   transform: scaleX(-1);
 }
@@ -147,10 +168,11 @@ canvas {
 .hint {
   position: relative;
   margin-top: 20px;
-  background: rgba(255, 255, 255, 0.8);
   padding: 10px;
   border-radius: 5px;
-  font-size: 1.2em;
+  font-size: 0.7em;
+
+  color: #f0f0f0;
   text-align: center;
 }
 
