@@ -72,7 +72,6 @@
 .main {
   font-family: "Arial", sans-serif;
   background-color: hsl(15deg 55% 6%);
-  display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
