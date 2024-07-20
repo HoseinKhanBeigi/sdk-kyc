@@ -5,7 +5,6 @@ import React, {
   useRef,
   useState,
   useCallback,
-  use,
   useMemo,
 } from "react";
 import loadFaceMesh from "./faceMesh";
@@ -30,7 +29,6 @@ const ObjectDetection = ({
   const [recording, setRecording] = useState(false);
   const [recordedChunks, setRecordedChunks] = useState([]);
   const videoContainer = useRef("");
-
   const ac = useMemo(() => {
     const actionMappings2 = {
       c: "center",
@@ -56,57 +54,38 @@ const ObjectDetection = ({
 
   const mediaRecorderRef = useRef(null);
 
-  const handleFacePosition = useCallback(() => {
-    if (firstStepCompleted) {
-      setTimeout(() => {
-        if (currentStep === "center") {
-          setCurrentStep(mappedSteps[1].step);
-          stopAnimation(0);
-          startAnimation(1);
-        } else if (
-          currentStep === mappedSteps[1].step &&
-          stateMachine.current === mappedSteps[1].step
-        ) {
-          console.log(stateMachine.current, "stateMachine.current");
-          console.log(currentStep, "currentStep");
-          setCurrentStep(mappedSteps[2].step);
-          stopAnimation(1);
-          startAnimation(2);
-        } else if (
-          currentStep === mappedSteps[2].step &&
-          stateMachine.current === mappedSteps[2].step
-        ) {
-          setCurrentStep(mappedSteps[3].step);
-          stopAnimation(2);
-          startAnimation(3);
-        } else if (
-          currentStep === mappedSteps[3].step &&
-          stateMachine.current === mappedSteps[3].step
-        ) {
-          setSequenceCompleted(true);
-          stopAnimation(3);
-        }
-      }, 0);
-    }
-  }, [stateMachine.current]);
+  const boxShadowDown = useRef("0px 90px 80px -28px lime");
+  const boxShadowUp = useRef("0px -90px 80px -28px lime");
+  const boxShadowRight = useRef("90px 0px 80px -28px lime");
+  const boxShadowLeft = useRef("-90px 0px 80px -28px lime");
 
-  const isActiveRef = useRef(false);
-
-  const removeToggle1 = useRef();
-
-  useEffect(() => {
+  const transitionBoxShadow = (boxShadow) => {
     let start;
+    let box = "";
+
     const toggleClass = (timestamp) => {
       if (!start) start = timestamp;
       const elapsed = timestamp - start;
 
       if (elapsed >= 500) {
-        // Toggle class
+        if (boxShadow === "profile-left") {
+          box = boxShadowLeft.current;
+        }
+        if (boxShadow === "profile-right") {
+          box = boxShadowRight.current;
+        }
+        if (boxShadow === "up") {
+          box = boxShadowUp.current;
+        }
+        if (boxShadow === "down") {
+          box = boxShadowDown.current;
+        }
+
         isActiveRef.current = !isActiveRef.current;
-        if (videoContainer.current) {
-          videoContainer.current.className = isActiveRef.current
-            ? "video-container active"
-            : "video-container inactive";
+        if (containerRef.current) {
+          containerRef.current.style.boxShadow = isActiveRef.current
+            ? box
+            : "0px 0px 29px -28px transparent";
         }
         start = timestamp; // Reset the start time
       }
@@ -117,12 +96,58 @@ const ObjectDetection = ({
 
     // Start the animation
     removeToggle1.current = requestAnimationFrame(toggleClass);
+  };
 
-    // Cleanup function to cancel the animation frame
-    return () => {
-      removeToggle1.current = cancelAnimationFrame(toggleClass);
-    };
-  }, []);
+  const stopTransition = () => {
+    if (removeToggle1.current) {
+      cancelAnimationFrame(removeToggle1.current);
+      containerRef.current.style.boxShadow = "0px 0px 29px -28px transparent";
+    }
+  };
+
+  const handleFacePosition = useCallback(() => {
+    if (firstStepCompleted) {
+      setTimeout(() => {
+        if (currentStep === "center") {
+          setCurrentStep(mappedSteps[1].step);
+          stopAnimation(0);
+          startAnimation(1);
+          console.log(mappedSteps[1].step, "mappedSteps[1].step");
+          transitionBoxShadow(mappedSteps[1].step);
+        } else if (
+          currentStep === mappedSteps[1].step &&
+          stateMachine.current === mappedSteps[1].step
+        ) {
+          setCurrentStep(mappedSteps[2].step);
+          stopAnimation(1);
+          startAnimation(2);
+
+          stopTransition();
+          transitionBoxShadow(mappedSteps[2].step);
+        } else if (
+          currentStep === mappedSteps[2].step &&
+          stateMachine.current === mappedSteps[2].step
+        ) {
+          setCurrentStep(mappedSteps[3].step);
+          stopAnimation(2);
+          startAnimation(3);
+          stopTransition();
+          transitionBoxShadow(mappedSteps[3].step);
+        } else if (
+          currentStep === mappedSteps[3].step &&
+          stateMachine.current === mappedSteps[3].step
+        ) {
+          setSequenceCompleted(true);
+          stopAnimation(3);
+          stopTransition();
+        }
+      }, 0);
+    }
+  }, [stateMachine.current]);
+
+  const isActiveRef = useRef(false);
+
+  const removeToggle1 = useRef();
 
   useEffect(() => {
     handleFacePosition();
@@ -398,13 +423,10 @@ const ObjectDetection = ({
         !firstStepCompleted && !isFaceInCorrectPosition ? "not-centered" : ""
       }`}
     >
-      <div className="video-container" ref={videoContainer}>
+      <div className="video-container active" ref={videoContainer}>
         <video ref={videoRef} width="640" height="780" autoPlay muted />
-        {/* <div className="crosshair">
-          <div className="vertical-line"></div>
-          <div className="horizontal-line"></div>
-        </div> */}
       </div>
+
       {!sequenceCompleted && (
         <>
           {/* <div
@@ -418,15 +440,6 @@ const ObjectDetection = ({
         </>
       )}
       {sequenceCompleted && <div className="hint">Sequence completed!</div>}
-      {/* <div className="grid">
-        {grid.map((row, rowIndex) => (
-          <div key={rowIndex}>
-            {row.map((cell, cellIndex) => (
-              <div key={cellIndex}>{cell}</div>
-            ))}
-          </div>
-        ))}
-      </div> */}
 
       <div className="controls">
         {!recording && (
@@ -440,6 +453,26 @@ const ObjectDetection = ({
         )}
       </div>
       <div>
+        {/* <svg
+          width="100"
+          height="100"
+          className="hamburger"
+          viewBox="0 0 200 100"
+          style={{
+            border: "1px solid transparent",
+            borderRadius: "100%",
+            boxShadow: "0px -70px 29px -28px #e93f33",
+            transition: "box-shadow 0.5s ease-in-out",
+          }}
+        >
+          <path
+            d="M 0,100 A 100,100 0 0,1 200,100"
+            fill="none"
+            stroke="none"
+            stroke-width="1"
+          />
+        </svg> */}
+
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="328"
@@ -454,6 +487,9 @@ const ObjectDetection = ({
             maxWidth: "50%",
             width: "100%",
             height: "auto",
+            border: "1px solid transparent",
+            borderRadius: "100%",
+            transition: "box-shadow 0.5s ease-in-out",
           }}
         >
           <g data-name="Group 2413">

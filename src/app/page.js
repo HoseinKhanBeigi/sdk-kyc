@@ -14,9 +14,9 @@ const Kyc = () => {
   const removeToggle1 = useRef("");
   const boxRef = useRef([]);
 
-  const [actionss, setActionss] = useState("");
+  const [actionss, setActionss] = useState("c,l,r,u");
   const [videoBlob, setVideoBlob] = useState(null);
-  const [actions, setActions] = useState("");
+  const [actions, setActions] = useState(["center", "left", "right", "u"]);
   const [dataVideo, setDateVideo] = useState();
   const [orderId, setOrderId] = useState("");
   const [token, setToken] = useState("");
@@ -305,7 +305,6 @@ const Kyc = () => {
         (action) => actionMappings[action]
       );
 
-      console.log(mappedActions);
       setActions(mappedActions);
       // handleGetActios(json.orderId);
     } catch (error) {
@@ -321,18 +320,20 @@ const Kyc = () => {
   }, []);
 
   return (
-    <div style={{ display: "flex" }}>
-      {/* <div style={{ width: "500px" }}>
-        <div>veryfication response:</div>
-        <div>
-          alivenessVerified:{dataVideo?.alivenessVerified ? "true" : "false"}
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      {orderId && (
+        <div style={{ width: "500px", position: "absolute" }}>
+          <div>veryfication response:</div>
+          <div>
+            alivenessVerified:{dataVideo?.alivenessVerified ? "true" : "false"}
+          </div>
+          <div>desc: {dataVideo?.desc}</div>
+          <div>
+            faceVerified:{dataVideo?.faceVerified === true ? "true" : "false"}
+          </div>
+          <div>processTime:{dataVideo?.processTime}</div>
         </div>
-        <div>desc: {dataVideo?.desc}</div>
-        <div>
-          faceVerified:{dataVideo?.faceVerified === true ? "true" : "false"}
-        </div>
-        <div>processTime:{dataVideo?.processTime}</div>
-      </div> */}
+      )}
 
       <div className="main">
         {orderId && (
@@ -385,54 +386,50 @@ const Kyc = () => {
                 value={filterInputs.birthYear}
               />
             </div>
-            {/*<DatePickerInput*/}
-            {/*  value={filterInputs.birthDate}*/}
-            {/*  label={"تاریخ تولد"}*/}
-            {/*  onChange={handleChangeBrithDate}*/}
-            {/*  defaultValue={new Date("1996-01-10")}*/}
-            {/*/>*/}
+
             <button fullWidth variant="outlined" onClick={handleNext}>
               بعدی
             </button>
           </div>
         )}
+        {!orderId && (
+          <div className="container">
+            {error && <p className="error">{error}</p>}
+            <div
+              style={{
+                marginBottom: "30px",
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "30px",
+              }}
+            >
+              {" "}
+              حرکت های مورد انتظار
+            </div>
+            <div className="chipContainer">
+              <div className="chip" ref={(el) => (boxRef.current[0] = el)}>
+                <div class="chip-content"> {actions[0]}</div>
+              </div>
+              <div class="chip" ref={(el) => (boxRef.current[1] = el)}>
+                <div class="chip-content">{actions[1]}</div>
+              </div>
+              <div class="chip" ref={(el) => (boxRef.current[2] = el)}>
+                <div class="chip-content">{actions[2]}</div>
+              </div>
+              <div class="chip" ref={(el) => (boxRef.current[3] = el)}>
+                <div class="chip-content">{actions[3]}</div>
+              </div>
+            </div>
 
-        <div className="container">
-          {error && <p className="error">{error}</p>}
-          <div
-            style={{
-              marginBottom: "30px",
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "30px",
-            }}
-          >
-            {" "}
-            حرکت های مورد انتظار
+            <ObjectDetection
+              handleSendVideo={handleSendVideo}
+              setVideoBlob={setVideoBlob}
+              actions={actionss}
+              stopAnimation={stopAnimation}
+              startAnimation={startAnimation}
+            />
           </div>
-          <div className="chipContainer">
-            <div className="chip" ref={(el) => (boxRef.current[0] = el)}>
-              <div class="chip-content"> center</div>
-            </div>
-            <div class="chip" ref={(el) => (boxRef.current[1] = el)}>
-              <div class="chip-content">{actions[1]}</div>
-            </div>
-            <div class="chip" ref={(el) => (boxRef.current[2] = el)}>
-              <div class="chip-content">{actions[2]}</div>
-            </div>
-            <div class="chip" ref={(el) => (boxRef.current[3] = el)}>
-              <div class="chip-content">{actions[3]}</div>
-            </div>
-          </div>
-
-          <ObjectDetection
-            handleSendVideo={handleSendVideo}
-            setVideoBlob={setVideoBlob}
-            actions={actionss}
-            stopAnimation={stopAnimation}
-            startAnimation={startAnimation}
-          />
-        </div>
+        )}
       </div>
     </div>
   );
