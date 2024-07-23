@@ -2,7 +2,7 @@
 // src/VideoRecorder.js
 import React, { useState, useRef, useMemo, useEffect } from "react";
 
-// import axios from "axios";
+import axios from "axios";
 import ObjectDetection from "./objectDetection";
 
 import "./index.css";
@@ -59,23 +59,23 @@ const Kyc = () => {
         },
       };
 
-      return await fetch(`${baseUrl}/v2/kyc/submit/${orderId}`, {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-          charset: "utf-8",
-        },
-      }).then((res) => {
-        setDateVideo(res.data);
-      });
+      // return await fetch(`${baseUrl}/v2/kyc/submit/${orderId}`, {
+      //   method: "POST",
+      //   body: formData,
+      //   headers: {
+      //     Authorization: `Bearer ${token}`,
+      //     "Content-Type": "multipart/form-data",
+      //     charset: "utf-8",
+      //   },
+      // }).then((res) => {
+      //   setDateVideo(res.data);
+      // });
 
-      // return await axios
-      //   .post(`${baseUrl}/v2/kyc/submit/${orderId}`, formData, config)
-      //   .then((res) => {
-      //     setDateVideo(res.data);
-      //   });
+      return await axios
+        .post(`${baseUrl}/v2/kyc/submit/${orderId}`, formData, config)
+        .then((res) => {
+          setDateVideo(res.data);
+        });
     }
   };
 
