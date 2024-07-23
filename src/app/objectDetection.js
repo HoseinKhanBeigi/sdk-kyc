@@ -6,7 +6,6 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { FaceSvg } from "./faceSvg";
 // import loadFaceMesh from "./faceMesh";
 import { useFaceMesh } from "./useFaceMesh";
 import { useAudio } from "./useAudio";
