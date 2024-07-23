@@ -136,7 +136,7 @@ const Kyc = () => {
 
   return (
     <div style={{ display: "flex", justifyContent: "center" }}>
-      {!orderId && (
+      {orderId && (
         <div style={{ width: "500px", position: "absolute" }}>
           <div>veryfication response:</div>
           <div>
@@ -151,7 +151,7 @@ const Kyc = () => {
       )}
 
       <div className="main">
-        {orderId && (
+        {!orderId && (
           <div
             style={{
               display: "flex",
@@ -207,7 +207,7 @@ const Kyc = () => {
             </button>
           </div>
         )}
-        {!orderId && (
+        {orderId && (
           <div className="container">
             <ObjectDetection
               handleSendVideo={handleSendVideo}
